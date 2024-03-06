@@ -1,21 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   ft_print_di.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yabejani <yabejani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/28 18:10:11 by yabejani          #+#    #+#             */
-/*   Updated: 2024/03/06 16:28:19 by yabejani         ###   ########.fr       */
+/*   Created: 2023/11/20 13:13:58 by yabejani          #+#    #+#             */
+/*   Updated: 2024/01/18 16:23:16 by yabejani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <fcntl.h>
-#include <sys/wait.h>
-#include <signal.h>
-#include <string.h>
-#include <sys/types.h>
+#include "libft.h"
 
+static int	get_d_len(int nbr)
+{
+	int	len;
+
+	len = 0;
+	if (nbr <= 0)
+		len = 1;
+	while (nbr != 0)
+	{
+		nbr /= 10;
+		len++;
+	}
+	return (len);
+}
+
+int	ft_print_di(int nbr)
+{
+	int	len;
+
+	ft_putnbr_fd(nbr, 1);
+	len = get_d_len(nbr);
+	return (len);
+}

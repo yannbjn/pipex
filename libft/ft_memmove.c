@@ -1,21 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yabejani <yabejani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/28 18:10:11 by yabejani          #+#    #+#             */
-/*   Updated: 2024/03/06 16:28:19 by yabejani         ###   ########.fr       */
+/*   Created: 2023/11/07 11:59:57 by yabejani          #+#    #+#             */
+/*   Updated: 2024/01/18 16:23:16 by yabejani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <fcntl.h>
-#include <sys/wait.h>
-#include <signal.h>
-#include <string.h>
-#include <sys/types.h>
+#include "libft.h"
 
+void	*ft_memmove(void *dest, const void *src, size_t n)
+{
+	long	i;
+
+	if (dest < src)
+	{
+		i = 0;
+		while ((size_t)i < n)
+		{
+			*(unsigned char *)(dest + i) = *(unsigned char *)(src + i);
+			i++;
+		}
+	}
+	if (dest > src)
+	{
+		i = n - 1;
+		while (i >= 0)
+		{
+			*(unsigned char *)(dest + i) = *(unsigned char *)(src + i);
+			i--;
+		}
+	}
+	return (dest);
+}
