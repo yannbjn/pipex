@@ -6,7 +6,7 @@
 /*   By: yabejani <yabejani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 11:42:39 by yabejani          #+#    #+#             */
-/*   Updated: 2024/02/21 14:19:10 by yabejani         ###   ########.fr       */
+/*   Updated: 2024/03/07 13:48:18 by yabejani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,14 @@ int		ft_print_s(const char *str);
 int		ft_print_p(void *ptr);
 int		ft_print_xx(unsigned int nbr, int flag);
 int		ft_printf(const char *form, ...);
+
+//fd_printf
+int		fd_print_di(int fd, int nbr);
+int		fd_print_u(int fd, unsigned int nbr);
+int		fd_print_s(int fd, const char *str);
+int		fd_print_p(int fd, void *ptr);
+int		fd_print_xx(int fd, unsigned int nbr, int flag);
+int		fd_printf(int fd, const char *form, ...);
 
 //GNL heap
 # ifndef BUFFER_SIZE

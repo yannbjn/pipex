@@ -1,18 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yabejani <yabejani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/28 18:10:11 by yabejani          #+#    #+#             */
-/*   Updated: 2024/03/07 13:30:39 by yabejani         ###   ########.fr       */
+/*   Created: 2024/03/06 16:41:41 by yabejani          #+#    #+#             */
+/*   Updated: 2024/03/07 13:28:37 by yabejani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "inc/pipex.h"
+#ifndef PIPEX_H
+# define PIPEX_H
 
-int	main(int argc, char **argv, char **envp)
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <fcntl.h>
+#include <sys/wait.h>
+#include <signal.h>
+#include <string.h>
+#include <sys/types.h>
+#include "libft/libft.h"
+
+typedef struct s_pip
 {
-	
-}
+	char	**cmds;
+	char	**envp;
+	int		here_doc;
+}				t_pip;
+
+#endif
