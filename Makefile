@@ -2,8 +2,8 @@ NAME		=	pipex
 
 CC			=	cc
 
-#FLAG		=	-Wall -Wextra -Werror -g3
-FLAG		=	-g3
+FLAG		=	-Wall -Wextra -Werror -g3
+#FLAG		=	-g3
 
 LIBFT_PATH	=	libft
 
