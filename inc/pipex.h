@@ -6,7 +6,7 @@
 /*   By: yabejani <yabejani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 16:41:41 by yabejani          #+#    #+#             */
-/*   Updated: 2024/03/19 16:59:01 by yabejani         ###   ########.fr       */
+/*   Updated: 2024/03/19 18:44:17 by yabejani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # define HERE_TEMPLATE "./pipex here_doc LIMITER cmd1 cmd2 file\n"
 # define MERROR "Malloc Error"
 # define OPENFAIL "No such file or directory / permission denied: "
+# define CMDFAIL "Command not found"
 
 typedef struct s_pipe
 {
@@ -50,5 +51,7 @@ typedef struct s_pipe
 void		ft_init(t_pipe *pipe, int argc, char **argv, char **envp);
 int			wait_children(pid_t pid);
 pid_t		get_cmds(t_pipe *pip, char **argv);
+int			access_cmd(t_pipe *pip);
+void		ft_exec(t_pipe *pip, int indcmd, pid_t *pid);
 
 #endif

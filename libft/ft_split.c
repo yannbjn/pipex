@@ -6,7 +6,7 @@
 /*   By: yabejani <yabejani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 15:41:34 by yabejani          #+#    #+#             */
-/*   Updated: 2024/02/27 20:00:56 by yabejani         ###   ########.fr       */
+/*   Updated: 2024/03/19 19:05:47 by yabejani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	free_tab(char **tab)
 	size_t	i;
 
 	i = 0;
+	if (!tab)
+		return ;
 	while (tab[i])
 		(free(tab[i]), i++);
 	free(tab);
