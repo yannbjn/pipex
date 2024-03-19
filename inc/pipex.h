@@ -6,7 +6,7 @@
 /*   By: yabejani <yabejani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 16:41:41 by yabejani          #+#    #+#             */
-/*   Updated: 2024/03/14 13:52:57 by yabejani         ###   ########.fr       */
+/*   Updated: 2024/03/19 16:59:01 by yabejani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <string.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <errno.h>
 # include <unistd.h>
 
 # define TRUE 1
@@ -47,5 +48,7 @@ typedef struct s_pipe
 }			t_pipe;
 
 void		ft_init(t_pipe *pipe, int argc, char **argv, char **envp);
+int			wait_children(pid_t pid);
+pid_t		get_cmds(t_pipe *pip, char **argv);
 
 #endif

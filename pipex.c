@@ -6,7 +6,7 @@
 /*   By: yabejani <yabejani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 18:10:11 by yabejani          #+#    #+#             */
-/*   Updated: 2024/03/13 13:35:55 by yabejani         ###   ########.fr       */
+/*   Updated: 2024/03/19 16:57:14 by yabejani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,8 @@ int	main(int argc, char **argv, char **envp)
 
 	ft_check_input(&pip, argc, argv);
 	ft_init(&pip, argc, argv, envp);
-	fd_printf(1, "success");
+	if (pip.here_doc)
+		return (wait_children(get_cmds(&pip, argv + 2)));
+	else
+		return (wait_children(get_cmds(&pip, argv + 1)));
 }

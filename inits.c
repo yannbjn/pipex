@@ -6,7 +6,7 @@
 /*   By: yabejani <yabejani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 13:28:05 by yabejani          #+#    #+#             */
-/*   Updated: 2024/03/14 13:52:13 by yabejani         ###   ########.fr       */
+/*   Updated: 2024/03/19 14:55:45 by yabejani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	ft_init(t_pipe *pip, int argc, char **argv, char **envp)
 	pip->fdin = 0;
 	pip->fdout = 0;
 	pip->pipes = 0;
-	pip->nb_pipes = 0;
+	pip->nb_pipes = argc - 4;
 	ft_open(pip, argc, argv);
 }
 
@@ -34,17 +34,19 @@ static void	ft_open(t_pipe *pip, int argc, char **argv)
 	if (!pip->here_doc)
 	{
 		pip->fdin = open(argv[1], O_RDONLY);
-		pip->fdout = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		pip->fdout = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	}
 	if (pip->here_doc)
 	{
 		pip->limiter = ft_strjoin(argv[2], "\n");
 		if (!pip->limiter)
 			fd_printf(STDERR_FILENO, "%s\n", MERROR);
-		pip->fdout = open(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
+		pip->fdout = open(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND, 0777);
 	}
 	if (pip->fdin == -1)
 		(fd_printf(STDERR_FILENO, OPENFAIL), fd_printf(2, "%s\n", argv[1]));
+	if (pip->here_doc)
+		pip->nb_pipes = argc - 5;
 	ft_path(pip);
 }
 
@@ -60,12 +62,11 @@ static void	ft_path(t_pipe *pip)
 		return ;
 	path = ft_substr(pip->envp[i], 5, ft_strlen(pip->envp[i]) - 5);
 	if (!path)
-		(fd_printf(STDERR_FILENO, "%s", MERROR), exit(1));*
+		(fd_printf(STDERR_FILENO, "%s", MERROR), exit(1));
 	pip->path = ft_split(path, ':');
 	free(path);
 	if (!pip->path)
 		(fd_printf(STDERR_FILENO, "%s", MERROR), exit(1));
-	fd_printf(1, "path = %s\n", pip->path);
 	ft_pipes(pip);
 }
 
