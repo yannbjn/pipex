@@ -6,11 +6,37 @@
 /*   By: yabejani <yabejani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 18:10:11 by yabejani          #+#    #+#             */
-/*   Updated: 2024/03/19 18:40:44 by yabejani         ###   ########.fr       */
+/*   Updated: 2024/03/20 14:30:12 by yabejani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inc/pipex.h"
+
+static int	get_heredoc(t_pipe *pip)
+{
+	int		fd;
+	int		i;
+	char	*file;
+
+	i = 2;
+	file = ft_calloc(i, sizeof(char));
+	if (!file)
+		(fd_printf(2, MERROR), freeclose(pip), exit(1));
+	ft_memset(file, 'h', i - 1);
+	while (!access(file, F_OK) && errno != ENOENT)
+	{
+		(free(file), file = ft_calloc(++i, sizeof(char)));
+		if ((i < 0 || !file) && fd_printf(2, MERROR))
+			(freeclose(pip), exit(1));
+		ft_memset(file, 'h', i - 1);
+	}
+	fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	pip->fdin = open(file, O_RDONLY);
+	(unlink(file), free(file));
+	if (pip->fdin == -1 || fd == -1)
+		perror("open");
+	return (fd);
+}
 
 static void	ft_check_input(t_pipe *pip, int argc, char **argv)
 {
@@ -37,9 +63,23 @@ static void	ft_check_input(t_pipe *pip, int argc, char **argv)
 int	main(int argc, char **argv, char **envp)
 {
 	t_pipe	pip;
+	int		fd;
+	char	*line;
 
 	ft_check_input(&pip, argc, argv);
 	ft_init(&pip, argc, argv, envp);
+	if (pip.here_doc)
+	{
+		fd = get_heredoc(&pip);
+		while (ft_printf("here_doc> "))
+		{
+			line = ft_get_next_line(0);
+			if (!ft_strncmp(line, pip.limiter, ft_strlen(pip.limiter)))
+				break ;
+			(fd_printf(fd, "%s", line), free(line));
+		}
+		(free(line), close(fd));
+	}
 	if (pip.here_doc)
 		return (wait_children(get_cmds(&pip, argv + 2)));
 	else

@@ -6,7 +6,7 @@
 /*   By: yabejani <yabejani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 16:04:59 by yabejani          #+#    #+#             */
-/*   Updated: 2024/03/20 12:50:14 by yabejani         ###   ########.fr       */
+/*   Updated: 2024/03/20 13:01:19 by yabejani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	ft_exec(t_pipe *pip, int indcmd, pid_t *pid)
 		fd[1] = pip->pipes[indcmd][1];
 	*pid = fork();
 	if (*pid == -1)
-		(perror("fork"), exit(1));
+		(perror("fork"), freeclose(pip), exit(1));
 	if (!(*pid))
 	{
 		if (dup2(fd[0], STDIN_FILENO) == -1 || dup2(fd[1], STDOUT_FILENO) == -1)
@@ -37,7 +37,7 @@ void	ft_exec(t_pipe *pip, int indcmd, pid_t *pid)
 			(close(pip->pipes[i][0]), close (pip->pipes[i][1]));
 		(close(pip->fdin), close(pip->fdout));
 		execve(pip->cmds[0], pip->cmds, pip->envp);
-		(perror("execve"), exit(1));
+		(perror("execve"), freeclose(pip), exit(1));
 	}
 }
 
@@ -91,7 +91,7 @@ pid_t	get_cmds(t_pipe *pip, char **argv)
 		else
 			ft_exec(pip, i, &pid);
 	}
-	return (pid);
+	return (freeclose(pip), pid);
 }
 
 int	wait_children(pid_t pid)

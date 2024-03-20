@@ -6,13 +6,13 @@
 /*   By: yabejani <yabejani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:28:23 by yabejani          #+#    #+#             */
-/*   Updated: 2024/03/20 12:51:11 by yabejani         ###   ########.fr       */
+/*   Updated: 2024/03/20 13:02:08 by yabejani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inc/pipex.h"
 
-void	ft_freeclose(t_pipe *pip)
+void	freeclose(t_pipe *pip)
 {
 	int	i;
 
