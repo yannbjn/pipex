@@ -6,7 +6,7 @@
 /*   By: yabejani <yabejani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 16:04:59 by yabejani          #+#    #+#             */
-/*   Updated: 2024/03/20 13:01:19 by yabejani         ###   ########.fr       */
+/*   Updated: 2024/03/20 16:44:06 by yabejani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	ft_exec(t_pipe *pip, int indcmd, pid_t *pid)
 	if (!(*pid))
 	{
 		if (dup2(fd[0], STDIN_FILENO) == -1 || dup2(fd[1], STDOUT_FILENO) == -1)
-			(perror("dup2"), exit(1));
+			(perror("dup2"), freeclose(pip), exit(1));
 		while (pip->pipes[++i])
 			(close(pip->pipes[i][0]), close (pip->pipes[i][1]));
 		(close(pip->fdin), close(pip->fdout));
