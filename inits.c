@@ -6,7 +6,7 @@
 /*   By: yabejani <yabejani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 13:28:05 by yabejani          #+#    #+#             */
-/*   Updated: 2024/03/19 18:44:05 by yabejani         ###   ########.fr       */
+/*   Updated: 2024/03/20 12:46:56 by yabejani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static void	ft_pipes(t_pipe *pip)
 	if (!pip->pipes)
 		(fd_printf(STDERR_FILENO, MERROR), exit(1));
 	pip->pipes[pip->nb_pipes] = NULL;
-	while(++i < pip->nb_pipes)
+	while (++i < pip->nb_pipes)
 	{
 		pip->pipes[i] = ft_calloc(3, sizeof(int));
 		if (!pip->pipes[i] || pipe(pip->pipes[i]) == -1)

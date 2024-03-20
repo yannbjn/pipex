@@ -6,7 +6,7 @@
 /*   By: yabejani <yabejani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 16:41:41 by yabejani          #+#    #+#             */
-/*   Updated: 2024/03/19 18:44:17 by yabejani         ###   ########.fr       */
+/*   Updated: 2024/03/20 12:38:59 by yabejani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,6 @@ int			wait_children(pid_t pid);
 pid_t		get_cmds(t_pipe *pip, char **argv);
 int			access_cmd(t_pipe *pip);
 void		ft_exec(t_pipe *pip, int indcmd, pid_t *pid);
+void		ft_freeclose(t_pipe *pip);
 
 #endif

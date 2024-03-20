@@ -6,7 +6,7 @@
 /*   By: yabejani <yabejani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 16:04:59 by yabejani          #+#    #+#             */
-/*   Updated: 2024/03/19 19:22:19 by yabejani         ###   ########.fr       */
+/*   Updated: 2024/03/20 12:50:14 by yabejani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 void	ft_exec(t_pipe *pip, int indcmd, pid_t *pid)
 {
 	size_t	i;
-	int	fd[2];
+	int		fd[2];
 
 	i = -1;
-	if(!indcmd)
+	if (!indcmd)
 		fd[0] = pip->fdin;
 	else
 		fd[0] = pip->pipes[indcmd - 1][0];
@@ -32,7 +32,7 @@ void	ft_exec(t_pipe *pip, int indcmd, pid_t *pid)
 	if (!(*pid))
 	{
 		if (dup2(fd[0], STDIN_FILENO) == -1 || dup2(fd[1], STDOUT_FILENO) == -1)
-			(perror("dup2"),exit(1));
+			(perror("dup2"), exit(1));
 		while (pip->pipes[++i])
 			(close(pip->pipes[i][0]), close (pip->pipes[i][1]));
 		(close(pip->fdin), close(pip->fdout));
@@ -77,7 +77,7 @@ pid_t	get_cmds(t_pipe *pip, char **argv)
 	i = -1;
 	while (++i <= pip->nb_pipes && ++argv)
 	{
-		(free_tab(pip->cmds), pip->cmds= ft_split(*(argv), ' '));
+		(free_tab(pip->cmds), pip->cmds = ft_split(*(argv), ' '));
 		if (!pip->cmds || !pip->cmds[0])
 		{
 			(fd_printf(STDERR_FILENO, MERROR), pid = -1);
@@ -87,7 +87,7 @@ pid_t	get_cmds(t_pipe *pip, char **argv)
 		if (code == -1)
 			(fd_printf(STDERR_FILENO, MERROR), exit(1));
 		else if (code == 127)
-			(fd_printf(STDERR_FILENO, "%s: %s", pip->cmds[0], CMDFAIL), pid = -1);
+			(fd_printf(2, "%s: %s", pip->cmds[0], CMDFAIL), pid = -1);
 		else
 			ft_exec(pip, i, &pid);
 	}

@@ -13,7 +13,8 @@ LIBFT_LIB	=	$(LIBFT_PATH)/$(LIBFT_FILE)
 
 C_FILE		=	pipex.c \
 				inits.c \
-				exec.c
+				exec.c \
+				freeclose.c
 
 OBJS		=	$(C_FILE:.c=.o)
 
