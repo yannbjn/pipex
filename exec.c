@@ -6,7 +6,7 @@
 /*   By: yabejani <yabejani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 16:04:59 by yabejani          #+#    #+#             */
-/*   Updated: 2024/03/20 16:44:06 by yabejani         ###   ########.fr       */
+/*   Updated: 2024/03/21 15:10:24 by yabejani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	ft_exec(t_pipe *pip, int indcmd, pid_t *pid)
 			(close(pip->pipes[i][0]), close (pip->pipes[i][1]));
 		(close(pip->fdin), close(pip->fdout));
 		execve(pip->cmds[0], pip->cmds, pip->envp);
-		(perror("execve"), freeclose(pip), exit(1));
+		(fd_printf(2, CMDFAIL), freeclose(pip), exit(1));
 	}
 }
 
