@@ -6,7 +6,7 @@
 /*   By: yabejani <yabejani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 13:28:05 by yabejani          #+#    #+#             */
-/*   Updated: 2024/03/21 13:48:11 by yabejani         ###   ########.fr       */
+/*   Updated: 2024/03/26 13:16:29 by yabejani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void	ft_open(t_pipe *pip, int argc, char **argv)
 		(fd_printf(STDERR_FILENO, OPENFAIL), fd_printf(2, "%s\n", argv[1]));
 	if (pip->here_doc)
 		pip->nb_pipes = argc - 5;
-	ft_path(pip);
+	(ft_path(pip), ft_pipes(pip));
 }
 
 static void	ft_path(t_pipe *pip)
@@ -67,7 +67,6 @@ static void	ft_path(t_pipe *pip)
 	free(path);
 	if (!pip->path)
 		(fd_printf(STDERR_FILENO, "%s", MERROR), exit(1));
-	ft_pipes(pip);
 }
 
 static void	ft_pipes(t_pipe *pip)

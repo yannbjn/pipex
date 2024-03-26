@@ -6,7 +6,7 @@
 /*   By: yabejani <yabejani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 16:04:59 by yabejani          #+#    #+#             */
-/*   Updated: 2024/03/21 15:10:24 by yabejani         ###   ########.fr       */
+/*   Updated: 2024/03/26 13:13:02 by yabejani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	ft_exec(t_pipe *pip, int indcmd, pid_t *pid)
 			(close(pip->pipes[i][0]), close (pip->pipes[i][1]));
 		(close(pip->fdin), close(pip->fdout));
 		execve(pip->cmds[0], pip->cmds, pip->envp);
-		(fd_printf(2, CMDFAIL), freeclose(pip), exit(1));
+		(perror("execve"), freeclose(pip), exit(1));
 	}
 }
 
@@ -50,7 +50,7 @@ int	access_cmd(t_pipe *pip)
 	i = -1;
 	cmd = pip->cmds[0];
 	if (ft_strchr(cmd, '/') != NULL && access(cmd, F_OK | X_OK) != 0)
-		return (127);
+		return (42);
 	else if (ft_strchr(cmd, '/') != NULL && access(cmd, F_OK | X_OK) == 0)
 		return (0);
 	while (pip->path && pip->path[++i])
@@ -65,7 +65,7 @@ int	access_cmd(t_pipe *pip)
 		}
 		free(tmp);
 	}
-	return (127);
+	return (42);
 }
 
 pid_t	get_cmds(t_pipe *pip, char **argv)
@@ -85,8 +85,8 @@ pid_t	get_cmds(t_pipe *pip, char **argv)
 		}
 		code = access_cmd(pip);
 		if (code == -1)
-			(fd_printf(STDERR_FILENO, MERROR), exit(1));
-		else if (code == 127)
+			(fd_printf(2, MERROR), freeclose(pip), exit(1));
+		else if (code == 42)
 			(fd_printf(2, "%s: %s", pip->cmds[0], CMDFAIL), pid = -1);
 		else
 			ft_exec(pip, i, &pid);
