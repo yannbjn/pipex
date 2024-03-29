@@ -6,7 +6,7 @@
 /*   By: yabejani <yabejani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 18:10:11 by yabejani          #+#    #+#             */
-/*   Updated: 2024/03/21 18:09:02 by yabejani         ###   ########.fr       */
+/*   Updated: 2024/03/26 16:04:52 by yabejani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,9 @@ int	main(int argc, char **argv, char **envp)
 	t_pipe	pip;
 	int		fd;
 	char	*line;
+	int		flag;
 
+	flag = 0;
 	ft_check_input(&pip, argc, argv);
 	ft_init(&pip, argc, argv, envp);
 	if (pip.here_doc)

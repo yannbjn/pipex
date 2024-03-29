@@ -6,7 +6,7 @@
 /*   By: yabejani <yabejani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 16:04:59 by yabejani          #+#    #+#             */
-/*   Updated: 2024/03/26 13:13:02 by yabejani         ###   ########.fr       */
+/*   Updated: 2024/03/29 13:49:56 by yabejani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ void	ft_exec(t_pipe *pip, int indcmd, pid_t *pid)
 		fd[1] = pip->pipes[indcmd][1];
 	*pid = fork();
 	if (*pid == -1)
-		(perror("fork"), freeclose(pip), exit(1));
+		(fd_printf(STDERR_FILENO, FORK), freeclose(pip), exit(1));
 	if (!(*pid))
 	{
 		if (dup2(fd[0], STDIN_FILENO) == -1 || dup2(fd[1], STDOUT_FILENO) == -1)
-			(perror("dup2"), freeclose(pip), exit(1));
+			(fd_printf(2, "Permission denied\n"), freeclose(pip), exit(1));
 		while (pip->pipes[++i])
 			(close(pip->pipes[i][0]), close (pip->pipes[i][1]));
 		(close(pip->fdin), close(pip->fdout));
@@ -68,6 +68,30 @@ int	access_cmd(t_pipe *pip)
 	return (42);
 }
 
+static int	accessnoexec(t_pipe *pip)
+{
+	int		i;
+	char	*cmd;
+	char	*tmp;
+
+	i = -1;
+	cmd = pip->cmds[0];
+	while (pip->path && pip->path[++i])
+	{
+		tmp = ft_strjoinfree(ft_strjoin(pip->path[i], "/"), cmd);
+		if (!tmp)
+			return (-1);
+		if (access(tmp, F_OK) == 0 && access(tmp, X_OK) == -1)
+		{
+			(free(pip->cmds[0]), pip->cmds[0] = tmp);
+			fd_printf(2, "Permission denied\n");
+			return (126);
+		}
+		free(tmp);
+	}
+	return (0);
+}
+
 pid_t	get_cmds(t_pipe *pip, char **argv)
 {
 	pid_t	pid;
@@ -80,9 +104,10 @@ pid_t	get_cmds(t_pipe *pip, char **argv)
 		(free_tab(pip->cmds), pip->cmds = ft_split(*(argv), ' '));
 		if (!pip->cmds || !pip->cmds[0])
 		{
-			(fd_printf(STDERR_FILENO, MERROR), pid = -1);
+			(fd_printf(STDERR_FILENO, NOCMD), pid = -1);
 			continue ;
 		}
+		pip->flag = accessnoexec(pip);
 		code = access_cmd(pip);
 		if (code == -1)
 			(fd_printf(2, MERROR), freeclose(pip), exit(1));
@@ -102,10 +127,40 @@ int	wait_children(pid_t pid)
 	code = EXIT_FAILURE;
 	while (errno != ECHILD)
 	{
-		if (wait(&status) == pid && WIFEXITED(status))
+		waitpid(-1, &status, 0);
+		if (WIFEXITED(status))
 			code = WEXITSTATUS(status);
+		if (errno == EACCES)
+			return (126);
 		if (pid == -1)
-			return (127);
+			code = 127;
 	}
 	return (code);
 }
+
+// int	wait_children(pid_t pid)
+// {
+// 	int	status;
+// 	int	code;
+
+// 	code = EXIT_FAILURE;
+// 	while (errno != ECHILD)
+// 	{
+// 		ft_printf("wait status %d\n", wait(&status));
+// 		ft_printf("inwhile pid : %d\n", pid);
+// 		if (wait(&status) == pid && WIFEXITED(status))
+// 		{
+// 			ft_printf("WIFEXITED STATUS = %d\n", WIFEXITED(status));
+// 			ft_printf("in if wait status %d ?= %d pid\n", wait(&status), pid);
+// 			code = WEXITSTATUS(status);
+// 			ft_printf("WEXITSTATUS code = %d\n", WEXITSTATUS(status));
+// 			ft_printf("code = %d\n", code);
+// 		}
+// 		if (errno == EACCES)
+// 			return (126);
+// 		if (pid == -1)
+// 			return (127);
+// 	}
+// 	ft_printf("return code = %d\n", code);
+// 	return (code);
+// }

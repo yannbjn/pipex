@@ -6,7 +6,7 @@
 /*   By: yabejani <yabejani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 16:41:41 by yabejani          #+#    #+#             */
-/*   Updated: 2024/03/21 14:01:17 by yabejani         ###   ########.fr       */
+/*   Updated: 2024/03/28 13:59:05 by yabejani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,11 @@
 # define TEMPLATE "./pipex infile cmd1 cmd2 outfile\n"
 # define ARGS_ERROR_HERE_DOC "Need at least 4 inputs with here_doc\n"
 # define HERE_TEMPLATE "./pipex here_doc LIMITER cmd1 cmd2 file\n"
-# define MERROR "Malloc Error"
+# define MERROR "Malloc Error\n"
 # define OPENFAIL "No such file or directory / permission denied: "
-# define CMDFAIL "Command not found\n"
+# define CMDFAIL "Command not found / Permission denied\n"
+# define NOCMD "Command not found\n"
+# define FORK "Fork error\n"
 
 typedef struct s_pipe
 {
@@ -46,6 +48,7 @@ typedef struct s_pipe
 	int		fdout;
 	int		**pipes;
 	int		nb_pipes;
+	int		flag;
 }			t_pipe;
 
 void		ft_init(t_pipe *pipe, int argc, char **argv, char **envp);

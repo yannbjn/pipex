@@ -6,7 +6,7 @@
 /*   By: yabejani <yabejani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 13:28:05 by yabejani          #+#    #+#             */
-/*   Updated: 2024/03/26 13:16:29 by yabejani         ###   ########.fr       */
+/*   Updated: 2024/03/28 13:01:15 by yabejani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	ft_init(t_pipe *pip, int argc, char **argv, char **envp)
 	pip->fdout = 0;
 	pip->pipes = 0;
 	pip->nb_pipes = argc - 4;
+	pip->flag = 0;
 	ft_open(pip, argc, argv);
 }
 
@@ -82,6 +83,11 @@ static void	ft_pipes(t_pipe *pip)
 	{
 		pip->pipes[i] = ft_calloc(3, sizeof(int));
 		if (!pip->pipes[i] || pipe(pip->pipes[i]) == -1)
-			(fd_printf(STDERR_FILENO, MERROR), exit(1));
+		{
+			if (!pip->pipes[i])
+				(fd_printf(STDERR_FILENO, MERROR), exit(1));
+			if (pipe(pip->pipes[i]) == -1)
+				(fd_printf(STDERR_FILENO, "Pipe error\n"), exit(1));
+		}
 	}
 }
