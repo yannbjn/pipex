@@ -6,7 +6,7 @@
 /*   By: yabejani <yabejani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 18:10:11 by yabejani          #+#    #+#             */
-/*   Updated: 2024/03/26 16:04:52 by yabejani         ###   ########.fr       */
+/*   Updated: 2024/04/02 18:41:12 by yabejani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ static int	get_heredoc(t_pipe *pip)
 	file = ft_calloc(i, sizeof(char));
 	if (!file)
 		(fd_printf(2, MERROR), freeclose(pip), exit(1));
-	ft_memset(file, 'h', i - 1);
+	ft_memset(file, 'a', i - 1);
 	while (!access(file, F_OK) && errno != ENOENT)
 	{
 		(free(file), file = ft_calloc(++i, sizeof(char)));
 		if ((i < 0 || !file) && fd_printf(2, MERROR))
 			(freeclose(pip), exit(1));
-		ft_memset(file, 'h', i - 1);
+		ft_memset(file, 'a', i - 1);
 	}
 	fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	pip->fdin = open(file, O_RDONLY);
@@ -67,7 +67,6 @@ int	main(int argc, char **argv, char **envp)
 	char	*line;
 	int		flag;
 
-	flag = 0;
 	ft_check_input(&pip, argc, argv);
 	ft_init(&pip, argc, argv, envp);
 	if (pip.here_doc)
@@ -82,8 +81,9 @@ int	main(int argc, char **argv, char **envp)
 		}
 		(free(line), close(fd));
 	}
+	flag = pip.flag;
 	if (pip.here_doc)
-		return (wait_children(get_cmds(&pip, argv + 2)));
+		return (wait_children(flag, get_cmds(&pip, argv + 2)));
 	else
-		return (wait_children(get_cmds(&pip, argv + 1)));
+		return (wait_children(flag, get_cmds(&pip, argv + 1)));
 }
