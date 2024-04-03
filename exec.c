@@ -6,7 +6,7 @@
 /*   By: yabejani <yabejani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 16:04:59 by yabejani          #+#    #+#             */
-/*   Updated: 2024/04/03 18:16:45 by yabejani         ###   ########.fr       */
+/*   Updated: 2024/04/03 18:42:43 by yabejani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ pid_t	get_cmds(t_pipe *pip, char **argv)
 			(fd_printf(2, MERROR), freeclose(pip), exit(1));
 		else if (code == 42)
 			(fd_printf(2, "%s: %s", pip->cmds[0], CMDFAIL), pid = -1);
-			// (fd_printf(2, "%s", pip->cmds[0]), perror(" "), pid = -1);
 		else
 			ft_exec(pip, i, &pid);
 	}
@@ -166,3 +165,5 @@ int	wait_children(int flag, pid_t pid)
 // 	}
 // 	return (0);
 // }
+
+			// (fd_printf(2, "%s", pip->cmds[0]), perror(" "), pid = -1);
