@@ -6,7 +6,7 @@
 /*   By: yabejani <yabejani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 13:28:05 by yabejani          #+#    #+#             */
-/*   Updated: 2024/03/29 14:39:18 by yabejani         ###   ########.fr       */
+/*   Updated: 2024/04/04 14:14:46 by yabejani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	ft_open(t_pipe *pip, int argc, char **argv)
 	{
 		pip->limiter = ft_strjoin(argv[2], "\n");
 		if (!pip->limiter)
-			fd_printf(STDERR_FILENO, "%s\n", MERROR);
+			(fd_printf(2, "%s\n", MERROR), freeclose(pip), exit(1));
 		pip->fdout = open(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND, 0777);
 	}
 	if (pip->fdin == -1)

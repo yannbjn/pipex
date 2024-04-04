@@ -6,7 +6,7 @@
 /*   By: yabejani <yabejani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 18:10:11 by yabejani          #+#    #+#             */
-/*   Updated: 2024/04/04 12:48:04 by yabejani         ###   ########.fr       */
+/*   Updated: 2024/04/04 14:29:12 by yabejani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ static int	get_heredoc(t_pipe *pip)
 	if (!file)
 		(fd_printf(2, MERROR), freeclose(pip), exit(1));
 	ft_memset(file, 'a', i - 1);
-	while (!access(file, F_OK) && errno != ENOENT)
+	while (access(file, F_OK) == 0 && errno != ENOENT)
 	{
 		(free(file), file = ft_calloc(++i, sizeof(char)));
-		if ((i < 0 || !file) && fd_printf(2, MERROR))
+		if (!file && fd_printf(2, MERROR))
 			(freeclose(pip), exit(1));
 		ft_memset(file, 'a', i - 1);
 	}
@@ -36,6 +36,24 @@ static int	get_heredoc(t_pipe *pip)
 	if (pip->fdin == -1 || fd == -1)
 		perror("open");
 	return (fd);
+}
+
+static void	heredoc(t_pipe *pip)
+{
+	int		fd;
+	char	*line;
+
+	fd = get_heredoc(pip);
+	while (ft_printf("here_doc> "))
+	{
+		line = ft_get_next_line(0);
+		if (!line)
+			(fd_printf(2, MERROR), freeclose(pip), exit(1));
+		if (!ft_strncmp(line, pip->limiter, ft_strlen(pip->limiter)))
+			break ;
+		(fd_printf(fd, "%s", line), free(line));
+	}
+	(free(line), close(fd));
 }
 
 static void	ft_check_input(t_pipe *pip, int argc, char **argv)
@@ -63,27 +81,43 @@ static void	ft_check_input(t_pipe *pip, int argc, char **argv)
 int	main(int argc, char **argv, char **envp)
 {
 	t_pipe	pip;
-	int		fd;
-	char	*line;
 	int		flag;
 
 	ft_check_input(&pip, argc, argv);
 	ft_init(&pip, argc, argv, envp);
 	if (pip.here_doc)
-	{
-		fd = get_heredoc(&pip);
-		while (ft_printf("here_doc> "))
-		{
-			line = ft_get_next_line(0);
-			if (!ft_strncmp(line, pip.limiter, ft_strlen(pip.limiter)))
-				break ;
-			(fd_printf(fd, "%s", line), free(line));
-		}
-		(free(line), close(fd));
-	}
+		heredoc(&pip);
 	flag = pip.flag;
 	if (pip.here_doc)
 		return (wait_children(flag, get_cmds(&pip, argv + 2)));
 	else
 		return (wait_children(flag, get_cmds(&pip, argv + 1)));
 }
+
+// int	main(int argc, char **argv, char **envp)
+// {
+// 	t_pipe	pip;
+// 	int		fd;
+// 	char	*line;
+// 	int		flag;
+
+// 	ft_check_input(&pip, argc, argv);
+// 	ft_init(&pip, argc, argv, envp);
+// 	if (pip.here_doc)
+// 	{
+// 		fd = get_heredoc(&pip);
+// 		while (ft_printf("here_doc> "))
+// 		{
+// 			line = ft_get_next_line(0);
+// 			if (!ft_strncmp(line, pip.limiter, ft_strlen(pip.limiter)))
+// 				break ;
+// 			(fd_printf(fd, "%s", line), free(line));
+// 		}
+// 		(free(line), close(fd));
+// 	}
+// 	flag = pip.flag;
+// 	if (pip.here_doc)
+// 		return (wait_children(flag, get_cmds(&pip, argv + 2)));
+// 	else
+// 		return (wait_children(flag, get_cmds(&pip, argv + 1)));
+// }
