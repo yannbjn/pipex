@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
+/*   bexec.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yabejani <yabejani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 16:04:59 by yabejani          #+#    #+#             */
-/*   Updated: 2024/04/17 18:05:47 by yabejani         ###   ########.fr       */
+/*   Updated: 2024/04/18 12:37:06 by yabejani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,35 +48,6 @@ void	ft_exec(t_pipe *pip, int indcmd, pid_t *pid)
 		(perror("execve "), freeclose(pip), exit(1));
 	}
 }
-
-// void	ft_exec(t_pipe *pip, int indcmd, pid_t *pid)
-// {
-// 	size_t	i;
-// 	int		fd[2];
-
-// 	i = -1;
-// 	if (!indcmd)
-// 		fd[0] = pip->fdin;
-// 	else
-// 		fd[0] = pip->pipes[indcmd - 1][0];
-// 	if (indcmd == pip->nb_pipes)
-// 		fd[1] = pip->fdout;
-// 	else
-// 		fd[1] = pip->pipes[indcmd][1];
-// 	*pid = fork();
-// 	if (*pid == -1)
-// 		(fd_printf(STDERR_FILENO, FORK), freeclose(pip), exit(1));
-// 	if (*pid == 0)
-// 	{
-// 		if (dup2(fd[0], STDIN_FILENO) == -1 || dup2(fd[1], STDOUT_FILENO) == -1)
-// 			(fd_printf(2, "Permission denied\n"), freeclose(pip), exit(1));
-// 		while (pip->pipes[++i])
-// 			(close(pip->pipes[i][0]), close (pip->pipes[i][1]));
-// 		(close(pip->fdin), close(pip->fdout));
-// 		execve(pip->cmds[0], pip->cmds, pip->envp);
-// 		(perror("execve "), freeclose(pip), exit(1));
-// 	}
-// }
 
 int	access_cmd(t_pipe *pip)
 {

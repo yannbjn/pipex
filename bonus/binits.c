@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   inits.c                                            :+:      :+:    :+:   */
+/*   binits.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yabejani <yabejani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 13:28:05 by yabejani          #+#    #+#             */
-/*   Updated: 2024/04/16 17:22:14 by yabejani         ###   ########.fr       */
+/*   Updated: 2024/04/16 17:23:49 by yabejani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	ft_init(t_pipe *pip, int argc, char **argv, char **envp)
 	pip->cmds = NULL;
 	pip->envp = envp;
 	pip->path = NULL;
+	pip->limiter = NULL;
 	pip->fdin = 0;
 	pip->fdout = 0;
 	pip->pipes = 0;
@@ -31,12 +32,24 @@ void	ft_init(t_pipe *pip, int argc, char **argv, char **envp)
 
 static void	ft_open(t_pipe *pip, int argc, char **argv)
 {
-	pip->fdin = open(argv[1], O_RDONLY);
-	pip->fdout = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	if (!pip->here_doc)
+	{
+		pip->fdin = open(argv[1], O_RDONLY);
+		pip->fdout = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	}
+	if (pip->here_doc)
+	{
+		pip->limiter = ft_strjoin(argv[2], "\n");
+		if (!pip->limiter)
+			(fd_printf(2, "%s\n", MERROR), freeclose(pip), exit(1));
+		pip->fdout = open(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND, 0777);
+	}
 	if (pip->fdin == -1)
 		(fd_printf(STDERR_FILENO, OPENFAIL), fd_printf(2, "%s\n", argv[1]));
 	if (pip->fdout == -1)
 		pip->flag = 1;
+	if (pip->here_doc)
+		pip->nb_pipes = argc - 5;
 	(ft_path(pip), ft_pipes(pip));
 }
 

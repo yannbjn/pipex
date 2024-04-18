@@ -6,14 +6,14 @@
 /*   By: yabejani <yabejani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 16:41:41 by yabejani          #+#    #+#             */
-/*   Updated: 2024/04/16 13:39:11 by yabejani         ###   ########.fr       */
+/*   Updated: 2024/04/16 12:48:46 by yabejani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 
-# include "../libft/libft.h"
+# include "../../libft/libft.h"
 # include <fcntl.h>
 # include <signal.h>
 # include <stdbool.h>
@@ -27,11 +27,12 @@
 
 # define TRUE 1
 # define FALSE 0
-# define ARGS_ERROR "Need 4 inputs, not more not less\n"
+# define ARGS_ERROR "Need at least 4 inputs\n"
 # define TEMPLATE "./pipex infile cmd1 cmd2 outfile\n"
 # define ARGS_ERROR_HERE_DOC "Need at least 4 inputs with here_doc\n"
+# define HERE_TEMPLATE "./pipex here_doc LIMITER cmd1 cmd2 file\n"
 # define MERROR "Malloc Error\n"
-# define OPENFAIL "No such file or directory : "
+# define OPENFAIL "No such file or directory / permission denied: "
 # define CMDFAIL "Command not found / Permission denied /\
  No such file or directory\n"
 # define NOCMD "Command not found\n"
@@ -42,6 +43,8 @@ typedef struct s_pipe
 	char	**cmds;
 	char	**envp;
 	char	**path;
+	bool	here_doc;
+	char	*limiter;
 	int		fdin;
 	int		fdout;
 	int		**pipes;

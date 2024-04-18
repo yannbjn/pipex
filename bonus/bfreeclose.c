@@ -6,7 +6,7 @@
 /*   By: yabejani <yabejani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:28:23 by yabejani          #+#    #+#             */
-/*   Updated: 2024/04/16 13:03:13 by yabejani         ###   ########.fr       */
+/*   Updated: 2024/03/20 13:02:08 by yabejani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ void	freeclose(t_pipe *pip)
 			free(pip->pipes[i]));
 		free(pip->pipes);
 	}
+	if (pip->limiter)
+		free(pip->limiter);
 	if (pip->fdin >= 0)
 		close(pip->fdin);
 	if (pip->fdout >= 0)
